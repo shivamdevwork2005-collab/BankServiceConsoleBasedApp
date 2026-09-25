@@ -4,7 +4,12 @@ import java.util.Scanner;
 
 public class Atm implements Bank {
 
-    float balance;
+    Customer c ;       // Customer object
+
+    Atm(Customer c){
+        this.c = c;
+    }
+
     static int pin; // No final
 
      {
@@ -103,8 +108,25 @@ public class Atm implements Bank {
                 break;
 
             case 5:
-                BankApplication b = new BankApplication();
-                b.start();
+                String accountNo = c.getAccountNo();
+                if(accountNo.contains("BOB")){
+                    BankService b = new BankServiceImplOfBob();
+                    b.BankMenu();
+                }else if(accountNo.contains("SBI")){
+                    BankService b = new BankServiceImplOfSbi();
+                    b.BankMenu();
+                }else if(accountNo.contains("PNB")){
+                    BankService b = new BankServiceImplOfPunjabNationalBank();
+                    b.BankMenu();
+                }else{
+                    System.out.println("\n----------------------------------------");
+                    System.out.println("       ❌ INVALID CHOICE");
+                    System.out.println("----------------------------------------");
+                    System.out.println("Please Enter a Valid Choice.\n");
+
+                    BankApplication b = new BankApplication();
+                    b.start();
+                }
                 break;
 
             case 6:
@@ -134,12 +156,15 @@ public class Atm implements Bank {
 
     @Override
     public void deposite(int amount) {
-        balance += amount;
+        float balance = c.getBalance();
+        balance+=amount;
+        c.setBalance(balance);
+
         System.out.println("\n----------------------------------------");
         System.out.println("         💵 DEPOSIT SUCCESSFUL");
         System.out.println("----------------------------------------");
         System.out.println("Deposited 💵 Amount : Rs" + amount);
-        System.out.println("Current 💵 Balance  : Rs" + balance);
+        System.out.println("Current 💵 Balance  : Rs" + c.getBalance());
         System.out.println("----------------------------------------");
 
         menu();
@@ -148,15 +173,17 @@ public class Atm implements Bank {
     @Override
     public void withdraw(int amount) {
 
-        if (amount <= balance) {
+        if (amount <= c.getBalance()) {
 
-            balance -= amount;
+            float balance = c.getBalance();
+            balance-=amount;
+            c.setBalance(balance);
 
             System.out.println("\n----------------------------------------");
             System.out.println("         WITHDRAWAL SUCCESSFUL");
             System.out.println("----------------------------------------");
             System.out.println("Withdrawn 💵 Amount : Rs" + amount);
-            System.out.println("Remaining 💵 Balance: Rs" + balance);
+            System.out.println("Remaining 💵 Balance: Rs" + c.getBalance());
             System.out.println("----------------------------------------");
 
         } else {
@@ -175,7 +202,7 @@ public class Atm implements Bank {
         System.out.println("\n----------------------------------------");
         System.out.println("             ACCOUNT 💵 BALANCE");
         System.out.println("----------------------------------------");
-        System.out.println("Current 💵 Balance: Rs" + balance);
+        System.out.println("Current 💵 Balance: Rs" + c.getBalance());
         System.out.println("----------------------------------------");
 
         menu();

@@ -1,437 +1,715 @@
 package AtmMachineProject;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class BankServiceImplOfBob implements  BankService {
+public class BankServiceImplOfBob implements BankService {
 
-    ArrayList<Customer> customers = new ArrayList<>();
+    HashMap<String, Customer> customers = new HashMap<>();
 
-    Scanner sc = new Scanner(System.in);
-
-    Atm atm ;
+    Atm atm;
 
     private static String accountPref = "20360100021";
+
+    // Single Scanner object
+    Scanner sc = new Scanner(System.in);
 
 
     @Override
     public void visitBank() {
+
         System.out.println("========== Welcome to Bank 🏦 Of Baroda ==========");
+
         BankMenu();
     }
+
 
     @Override
     public void BankMenu() {
 
-        while (true) {
+        System.out.println();
+        System.out.println("========== BOB BANK MENU ==========");
+        System.out.println("1. Withdraw");
+        System.out.println("2. Deposit");
+        System.out.println("3. Open Account");
+        System.out.println("4. Close Account");
+        System.out.println("5. UPI Transaction");
+        System.out.println("6. Loan");
+        System.out.println("7. Insurance");
+        System.out.println("8. Credit Card");
+        System.out.println("9. Find Account");
+        System.out.println("10. Use Atm Service");
+        System.out.println("11. Check Balance");
+        System.out.println("12. Exit");
+        System.out.println("====================================");
 
-            System.out.println();
-            System.out.println("========== BOB BANK MENU ==========");
-            System.out.println("1. Withdraw");
-            System.out.println("2. Deposit");
-            System.out.println("3. Open Account");
-            System.out.println("4. Close Account");
-            System.out.println("5. UPI Transaction");
-            System.out.println("6. Loan");
-            System.out.println("7. Insurance");
-            System.out.println("8. Credit Card");
-            System.out.println("9. Find Account");
-            System.out.println("10. Use Atm Service");
-            System.out.println("11. Exit");
-            System.out.println("====================================");
-            System.out.print("Enter your choice: ");
+        System.out.print("Enter your choice: ");
 
-            int choice = sc.nextInt();
-
-            switch (choice) {
-
-                case 1:
-                    System.out.print("Enter amount to withdraw: ");
-                    int withdrawAmount = sc.nextInt();
-
-                    sc.nextLine();
-                    System.out.print("Enter account number: ");
-                    String withdrawAccountNo = sc.nextLine();
-
-                    withdraw(withdrawAmount, withdrawAccountNo);
-                    break;
+        int choice = Integer.parseInt(sc.nextLine());
 
 
-                case 2:
-                    System.out.print("Enter amount to deposit: ");
-                    int depositAmount = sc.nextInt();
-
-                    sc.nextLine();
-                    System.out.print("Enter account number: ");
-                    String depositAccountNo = sc.nextLine();
-
-                    deposit(depositAmount, depositAccountNo);
-                    break;
+        switch (choice) {
 
 
-                case 3:
-                    sc.nextLine();
+            case 1:
 
-                    System.out.print("Enter customer name: ");
-                    String name = sc.nextLine();
+                System.out.print("Enter amount to withdraw: ");
+                int withdrawAmount = Integer.parseInt(sc.nextLine());
 
-                    System.out.print("Enter Aadhar number: ");
-                    double aadharNo = sc.nextDouble();
+                System.out.print("Enter account number: ");
+                String withdrawAccountNo = sc.nextLine();
 
-                    System.out.print("Enter initial balance: ");
-                    int balance = sc.nextInt();
+                withdraw(withdrawAmount, withdrawAccountNo);
+                BankMenu();
+                break;
 
-//                    System.out.println("Enter Account Type: 1.saving 2.Current");
-//                    String accountType = new Scanner(System.in).next();
 
-                    String accountNo = openAccount(name, aadharNo, balance);
+            case 2:
 
-                    System.out.println("Account created successfully.");
-                    System.out.println("Account Number: " + accountNo);
+                System.out.print("Enter amount to deposit: ");
+                int depositAmount = Integer.parseInt(sc.nextLine());
 
+                System.out.print("Enter account number: ");
+                String depositAccountNo = sc.nextLine();
+
+                deposit(depositAmount, depositAccountNo);
+
+                BankMenu();
+                break;
+
+
+            case 3:
+
+                System.out.print("Enter customer name: ");
+                String name = sc.nextLine();
+
+
+                System.out.println();
+                System.out.println("Select Bank:");
+                System.out.println("1. BOB");
+                System.out.println("2. PNB");
+                System.out.println("3. HDFC");
+                System.out.println("4. SBI");
+
+                System.out.print("Enter your choice: ");
+
+                int choice3 = Integer.parseInt(sc.nextLine());
+
+
+                String bankName = "";
+
+                if (choice3 == 1) {
+
+                    bankName = "BOB";
+
+                } else if (choice3 == 2) {
+
+                    bankName = "PNB";
+
+                } else if (choice3 == 3) {
+
+                    bankName = "HDFC";
+
+                } else if (choice3 == 4) {
+
+                    bankName = "SBI";
+
+                } else {
+
+                    System.out.println("Invalid bank choice.");
+                    BankMenu();
+                }
+
+
+                System.out.print("Enter Aadhar number: ");
+                String aadharNo = sc.nextLine();
+
+
+                if (aadharNo.length() != 12) {
+
+                    System.out.println("Invalid Aadhar number.");
                     BankMenu();
                     break;
+                }
 
 
-                case 4:
-                    sc.nextLine();
+                System.out.print("Enter initial balance: ");
+                int balance = Integer.parseInt(sc.nextLine());
 
-                    System.out.print("Enter customer name: ");
-                    String closeName = sc.nextLine();
 
-                    System.out.print("Enter account number: ");
-                    String closeAccountNo = sc.nextLine();
+                System.out.println();
+                System.out.println("Enter Account Type:");
+                System.out.println("1. Saving");
+                System.out.println("2. Current");
 
-                    Customer customer = CloseAccount(closeName, closeAccountNo);
-                    if(customer!=null)
-                        System.out.println("Account closed successfully. "+customer.accountNo);
-                    else{
-                        System.out.println("Account not found.");
-                    }
+                System.out.print("Enter your choice: ");
 
+                int choice2 = Integer.parseInt(sc.nextLine());
+
+
+                String accountType;
+
+
+                if (choice2 == 1) {
+
+                    accountType = "saving";
+
+                } else if (choice2 == 2) {
+
+                    accountType = "current";
+
+                } else {
+
+                    System.out.println("Invalid account type.");
                     BankMenu();
                     break;
+                }
 
 
-                case 5:
-                    System.out.print("Enter UPI amount: ");
-                    float upiAmount = sc.nextFloat();
+                String accountNo = openAccount(name, accountType, aadharNo, balance, bankName);
 
-                    sc.nextLine();
 
-                    System.out.print("Enter UPI ID: ");
-                    String upiId = sc.nextLine();
+                System.out.println();
+                System.out.println("Account created successfully.");
+                System.out.println("Account Number: " + accountNo);
 
-//                    sc.nextLine();
-                    System.out.print("Enter account number: ");
-                    String acNo = sc.nextLine();
+                BankMenu();
+                break;
 
-                    String upiResult = UpiTransaction(upiAmount, upiId, acNo);
 
-                    if(upiResult != null)
-                        System.out.println(upiResult);
-                    else
-                        System.out.println("Transaction failed.");
+            case 4:
 
+                System.out.print("Enter customer name: ");
+                String closeName = sc.nextLine();
+
+                System.out.print("Enter account number: ");
+                String closeAccountNo = sc.nextLine();
+
+
+                Customer customer = CloseAccount(closeName, closeAccountNo);
+
+
+                if (customer != null) {
+
+                    System.out.println("Account closed successfully. " + customer.getAccountNo());
+
+                } else {
+
+                    System.out.println("Account not found.");
+
+                }
+
+                BankMenu();
+                break;
+
+
+            case 5:
+
+                System.out.print("Enter UPI amount: ");
+                float upiAmount = Float.parseFloat(sc.nextLine());
+
+
+                System.out.print("Enter UPI ID: ");
+                String upiId = sc.nextLine();
+
+
+                System.out.print("Enter account number: ");
+                String acNo = sc.nextLine();
+
+
+                String upiResult = UpiTransaction(upiAmount, upiId, acNo);
+
+
+                if (upiResult != null) {
+
+                    System.out.println(upiResult);
+
+                } else {
+
+                    System.out.println("Transaction failed.");
+
+                }
+
+                BankMenu();
+                break;
+
+
+            case 6:
+
+                System.out.print("Enter loan amount: ");
+                float loanAmount = Float.parseFloat(sc.nextLine());
+
+
+                System.out.print("Enter time (years): ");
+                int loanTime = Integer.parseInt(sc.nextLine());
+
+
+                System.out.print("Enter rate: ");
+                float loanRate = Float.parseFloat(sc.nextLine());
+
+
+                System.out.print("Enter Aadhar number: ");
+                String loanAadhar = sc.nextLine();
+
+
+                if (loanAadhar.length() != 12) {
+
+                    System.out.println("Invalid Aadhar number.");
+                    BankMenu();
+                }
+
+
+                System.out.print("Enter account number: ");
+                String loanAccountNo = sc.nextLine();
+
+
+                String loanResult = loan(loanAadhar, loanAmount, loanTime, loanRate, loanAccountNo);
+
+
+                if (loanResult != null) {
+
+                    System.out.println(loanResult);
+
+                } else {
+
+                    System.out.println("Loan failed.");
+
+                }
+                BankMenu();
+                break;
+
+
+            case 7:
+
+                System.out.print("Enter Aadhar number: ");
+                String insuranceAadhar = sc.nextLine();
+
+
+                if (insuranceAadhar.length() != 12) {
+
+                    System.out.println("Invalid Aadhar number.");
                     BankMenu();
                     break;
+                }
 
 
-                case 6:
-                    System.out.print("Enter Aadhar number: ");
-                    double loanAadhar = sc.nextDouble();
+                System.out.print("Enter account number: ");
+                String insuranceAccountNo = sc.nextLine();
 
-                    System.out.print("Enter loan amount: ");
-                    float loanAmount = sc.nextFloat();
 
-                    System.out.print("Enter time (years): ");
-                    int loanTime = sc.nextInt();
+                System.out.print("Enter insurance amount: ");
+                float insuranceAmount = Float.parseFloat(sc.nextLine());
 
-                    System.out.print("Enter interest: ");
-                    float loanInterest = sc.nextFloat();
 
-                    System.out.print("Enter rate: ");
-                    float loanRate = sc.nextFloat();
+                System.out.print("Enter time: ");
+                int insuranceTime = Integer.parseInt(sc.nextLine());
 
-                    sc.nextLine();
 
-                    System.out.print("Enter account number: ");
-                    String loanAccountNo = sc.nextLine();
+                System.out.print("Enter interest: ");
+                float insuranceInterest = Float.parseFloat(sc.nextLine());
 
-                    String loanResult = loan(loanAadhar, loanAmount, loanTime, loanInterest, loanRate, loanAccountNo);
 
-                    if(loanResult != null)
-                        System.out.println(loanResult);
+                System.out.print("Enter rate: ");
+                float insuranceRate = Float.parseFloat(sc.nextLine());
 
-                    else
-                        System.out.println("Loan failed.");
 
+                System.out.print("Enter insurance type: ");
+                String insuranceType = sc.nextLine();
+
+
+                System.out.print("Enter insurance ID: ");
+                String insuranceId = sc.nextLine();
+
+
+                System.out.print("Enter insurance name: ");
+                String insuranceName = sc.nextLine();
+
+
+                System.out.print("Enter insurance number: ");
+                String insuranceNo = sc.nextLine();
+
+
+                System.out.print("Enter start date: ");
+                String startDate = sc.nextLine();
+
+
+                System.out.print("Enter end date: ");
+                String endDate = sc.nextLine();
+
+
+                String insuranceResult = insurance(insuranceAadhar, insuranceAccountNo, insuranceAmount, insuranceTime, insuranceInterest, insuranceRate, insuranceType, insuranceId, insuranceName, insuranceNo, startDate, endDate);
+
+
+                if (insuranceResult != null) {
+
+                    System.out.println(insuranceResult);
+
+                } else {
+
+                    System.out.println("Insurance failed.");
+
+                }
+
+                BankMenu();
+                break;
+
+
+            case 8:
+
+                System.out.print("Enter account number: ");
+                String cardAccountNo = sc.nextLine();
+
+
+                System.out.print("Enter card number: ");
+                String cardNo = sc.nextLine();
+
+
+                System.out.print("Enter card holder name: ");
+                String cardHolderName = sc.nextLine();
+
+
+                System.out.print("Enter card type: ");
+                String cardType = sc.nextLine();
+
+
+                System.out.print("Enter card start date: ");
+                String cardStartDate = sc.nextLine();
+
+
+                System.out.print("Enter card end date: ");
+                String cardEndDate = sc.nextLine();
+
+
+                System.out.print("Enter CVV: ");
+                String cardCvv = sc.nextLine();
+
+
+                System.out.print("Enter card PIN: ");
+                String cardPin = sc.nextLine();
+
+
+                System.out.print("Enter card status: ");
+                String cardStatus = sc.nextLine();
+
+
+                String cardResult = creditCard(cardAccountNo, cardNo, cardHolderName, cardType, cardStartDate, cardEndDate, cardCvv, cardPin, cardStatus);
+
+
+                if (cardResult != null) {
+
+                    System.out.println(cardResult);
+
+                } else {
+
+                    System.out.println("Credit card failed.");
+
+                }
+
+                BankMenu();
+                break;
+
+
+            case 9:
+
+                System.out.print("Enter account ID: ");
+                String accountId = sc.nextLine();
+
+
+                Customer foundCustomer = findAccount(accountId);
+
+
+                if (foundCustomer != null) {
+
+                    System.out.println("Account Found:");
+                    System.out.println("Customer Name: " + foundCustomer.getName());
+
+                    System.out.println("Account Number: " + foundCustomer.getAccountNo());
+
+                } else {
+
+                    System.out.println("Account not found.");
+
+                }
+
+                BankMenu();
+                break;
+
+
+            case 10:
+
+                System.out.print("Enter account number: ");
+                String accountNo2 = sc.nextLine();
+
+
+                Customer c = findAccount(accountNo2);
+
+
+                if (c == null) {
+
+                    System.out.println("Account not found.");
                     BankMenu();
                     break;
+                }
 
 
-                case 7:
-                    System.out.print("Enter Aadhar number: ");
-                    double insuranceAadhar = sc.nextDouble();
+                atm = new Atm(c);
 
-                    sc.nextLine();
+                atm.checkPin();
 
-                    System.out.print("Enter account number: ");
-                    String insuranceAccountNo = sc.nextLine();
+                atm.menu();
 
-                    System.out.print("Enter insurance amount: ");
-                    float insuranceAmount = sc.nextFloat();
+                break;
 
-                    System.out.print("Enter time: ");
-                    int insuranceTime = sc.nextInt();
 
-                    System.out.print("Enter interest: ");
-                    float insuranceInterest = sc.nextFloat();
+            case 11:
 
-                    System.out.print("Enter rate: ");
-                    float insuranceRate = sc.nextFloat();
+                System.out.print("Enter account number: ");
+                String accountNo3 = sc.nextLine();
 
-                    sc.nextLine();
 
-                    System.out.print("Enter insurance type: ");
-                    String insuranceType = sc.nextLine();
+                Customer c3 = findAccount(accountNo3);
 
-                    System.out.print("Enter insurance ID: ");
-                    String insuranceId = sc.nextLine();
 
-                    System.out.print("Enter insurance name: ");
-                    String insuranceName = sc.nextLine();
+                if (c3 == null) {
 
-                    System.out.print("Enter insurance number: ");
-                    String insuranceNo = sc.nextLine();
-
-                    System.out.print("Enter start date: ");
-                    String startDate = sc.nextLine();
-
-                    System.out.print("Enter end date: ");
-                    String endDate = sc.nextLine();
-
-                    String insuranceResult = insurance(
-                            insuranceAadhar,
-                            insuranceAccountNo,
-                            insuranceAmount,
-                            insuranceTime,
-                            insuranceInterest,
-                            insuranceRate,
-                            insuranceType,
-                            insuranceId,
-                            insuranceName,
-                            insuranceNo,
-                            startDate,
-                            endDate
-                    );
-
-                    if(insuranceResult != null)
-                        System.out.println(insuranceResult);
-                    else
-                        System.out.println("Insurance failed.");
-
+                    System.out.println("Account not found.");
                     BankMenu();
                     break;
+                }
 
 
-                case 8:
-                    sc.nextLine();
-
-                    System.out.print("Enter account number: ");
-                    String cardAccountNo = sc.nextLine();
-
-                    System.out.print("Enter card number: ");
-                    String cardNo = sc.nextLine();
-
-                    System.out.print("Enter card holder name: ");
-                    String cardHolderName = sc.nextLine();
-
-                    System.out.print("Enter card type: ");
-                    String cardType = sc.nextLine();
-
-                    System.out.print("Enter card start date: ");
-                    String cardStartDate = sc.nextLine();
-
-                    System.out.print("Enter card end date: ");
-                    String cardEndDate = sc.nextLine();
-
-                    System.out.print("Enter CVV: ");
-                    String cardCvv = sc.nextLine();
-
-                    System.out.print("Enter card PIN: ");
-                    String cardPin = sc.nextLine();
-
-                    System.out.print("Enter card status: ");
-                    String cardStatus = sc.nextLine();
-
-                    String cardResult = creditCard(
-                            cardAccountNo,
-                            cardNo,
-                            cardHolderName,
-                            cardType,
-                            cardStartDate,
-                            cardEndDate,
-                            cardCvv,
-                            cardPin,
-                            cardStatus
-                    );
-
-                    if(cardResult != null)
-                        System.out.println(cardResult);
-                    else
-                        System.out.println("Credit card failed.");
-
-                    BankMenu();
-                    break;
+                System.out.println("Your Net Balance is " + checkBalance(accountNo3));
+                BankMenu();
+                break;
 
 
-                case 9:
-                    sc.nextLine();
+            case 12:
 
-                    System.out.print("Enter account ID: ");
-                    String accountId = sc.nextLine();
+                System.out.println("============= Thank you for visiting " + "Bank Of Baroda Bank. =============");
 
-                    Customer foundCustomer = findAccount(accountId);
+                return;
 
-                    if (foundCustomer != null) {
-                        System.out.println("Account Found:");
-                        System.out.println(foundCustomer.name);
-                    } else {
-                        System.out.println("Account not found.");
-                    }
 
-                    BankMenu();
-                    break;
+            default:
 
-                case 10:
-                    atm = new Atm();
-                    atm.checkPin();
-                    atm.menu();
-                    break;
-
-                case 11:
-                    System.out.println("============= Thank you for visiting Bank Of Baroda Bank.==================");
-                    return;
-
-                default:
-                    System.out.println("Invalid choice. Please enter 1-10.");
-                    BankMenu();
-            }
+                System.out.println("Invalid choice. Please enter 1-12.");
+                BankMenu();
+                break;
         }
     }
+
 
     @Override
     public void withdraw(int amount, String accountNo) {
+
         Customer c = findAccount(accountNo.trim());
-        if(c == null){
+
+
+        if (c == null) {
+
             System.out.println("Account not found.");
+
             return;
         }
+
+
         System.out.println("Withdrawal amount: " + amount);
-        if(amount <= c.balance){
-            c.balance -= amount;
-        }
-        else {
+
+
+        if (amount <= c.getBalance()) {
+
+            c.setBalance(c.getBalance() - amount);
+
+            System.out.println("Withdrawal successful.");
+
+            System.out.println("Remaining balance: " + c.getBalance());
+
+        } else {
+
             System.out.println("Insufficient balance.");
         }
-
-        BankMenu();
     }
+
 
     @Override
     public void deposit(int amount, String accountNo) {
+
         Customer c = findAccount(accountNo.trim());
-        if(c == null){
+
+
+        if (c == null) {
+
             System.out.println("Account not found.");
+
             return;
         }
-        System.out.println("Deposit amount: " + amount);
-        c.balance += amount;
 
-        BankMenu();
+
+        System.out.println("Deposit amount: " + amount);
+
+
+        c.setBalance(c.getBalance() + amount);
+
+
+        System.out.println("Deposit successful.");
+
+        System.out.println("Current balance: " + c.getBalance());
     }
+
+
+    // =============================================================
+    // CHECK BALANCE
+    // =============================================================
+
+    private float checkBalance(String accountNo) {
+
+        Customer c = findAccount(accountNo);
+
+
+        if (c == null) {
+
+            return 0;
+        }
+
+
+        return c.getBalance();
+    }
+
 
     @Override
-    public String openAccount(String name, double AdharNo, int bal) {
+    public String openAccount(String name, String accountType, String AdharNo, int bal, String bankName) {
+
         Customer c1 = new Customer();
-        c1.name = name;
-        c1.AdharNo = AdharNo;
-        c1.balance = bal;
-        c1.accountNo = accountPref + name.substring(0,2);
-        customers.add(c1);
-        return c1.accountNo;
+
+
+        c1.setName(name);
+
+        c1.setAdharNo(AdharNo);
+
+        c1.setAccountType(accountType);
+
+        c1.setBalance(bal);
+
+        c1.setBankName(bankName);
+
+
+        c1.setAccountNo(accountPref + name.substring(0, 2) + "@BOB" + AdharNo.substring(5, 8));
+
+
+        customers.put(c1.getAccountNo(), c1);
+
+
+        return c1.getAccountNo();
     }
+
 
     @Override
     public Customer CloseAccount(String name, String accountNo) {
-        Customer c1 = customers.stream()
-                .filter(x -> x.accountNo.equals(accountNo.trim())).findFirst().orElse(null);
-        customers.remove(c1);
+
+        Customer c1 = customers.remove(accountNo.trim());
+
+
         return c1;
     }
 
+
     @Override
-    public String UpiTransaction(float amount, String upiId,String acountno) {
+    public String UpiTransaction(float amount, String upiId, String acountno) {
+
         Customer c = findAccount(acountno.trim());
-        if(c != null && amount <= c.balance){
-            c.balance -= amount;
+
+
+        if (c != null && amount <= c.getBalance()) {
+
+            c.setBalance(c.getBalance() - amount);
+
+
             return "Transaction successful.";
-        }
-        else {
+        } else {
+
             return "Insufficient balance.";
         }
     }
 
-    @Override
-    public String loan(double AdharNo, float amount, int time, float intrest, float rate, String accountNo) {
-        Customer c = customers.stream()
-                .filter(x -> x.accountNo.equals(accountNo.trim())).findFirst().orElse(null);
 
-        float si = amount * time * intrest / 100;
+    @Override
+    public String loan(String AdharNo, float amount, int time, float rate, String accountNo) {
+
+        Customer c = customers.get(accountNo.trim());
+
+
+        float si = amount * time * rate / 100;
+
+
         float totalAmount = amount + si;
-        if(c!=null){
-            c.balance += totalAmount;
-            return "Loan successful.";
-        }else{
+
+
+        if (c != null) {
+
+            c.setBalance(c.getBalance() + totalAmount);
+
+
+            return "Loan successful With SI " + si + " totalAmount is " + totalAmount;
+
+        } else {
+
             return "Loan failed.";
         }
     }
 
+
     @Override
-    public String insurance(double AdharNo, String accountNo, float amount, int time, float intrest, float rate,
-                            String insuranceType, String insuranceId, String insuranceName,
-                            String insuranceNo, String insuranceStartDate, String insuranceEndDate) {
-        Customer c1 = customers.stream()
-                .filter(x -> x.accountNo.equals(accountNo.trim())).findFirst().orElse(null);
+    public String insurance(String AdharNo, String accountNo, float amount, int time, float intrest, float rate, String insuranceType, String insuranceId, String insuranceName, String insuranceNo, String insuranceStartDate, String insuranceEndDate) {
+
+        Customer c1 = customers.get(accountNo.trim());
+
 
         float si = amount * time * intrest / 100;
+
+
         float totalAmount = amount + si;
-        if(c1 != null){
-            c1.balance += totalAmount;
+
+
+        if (c1 != null) {
+
+            c1.setBalance(c1.getBalance() + totalAmount);
+
+
             return "Insurance successful.";
-        }else{
+
+        } else {
+
             return "Insurance failed.";
         }
     }
 
+
     @Override
     public String creditCard(String accountNo, String cardNo, String cardHolderName, String cardType, String cardStartDate, String cardEndDate, String cardCvv, String cardPin, String cardStatus) {
-        Customer c1 = customers.stream()
-                .filter(x->x.accountNo.equals(accountNo.trim())).findFirst().orElse(null);
 
-        if(c1 != null){
-            c1.upiId = cardNo;
+        Customer c1 = customers.get(accountNo.trim());
+
+
+        if (c1 != null) {
+
+            c1.setUpiId(cardNo);
+
+
             return "Credit card successful.";
+
+        } else {
+
+            return "Credit Card Not Approved";
         }
-        else return "Credit Card Not Approved";
     }
+
+
+    // =============================================================
+
 
     @Override
     public Customer findAccount(String accountId) {
-        Customer c1 = customers.stream()
-                .filter(x->x.accountNo.equals(accountId.trim())).findFirst().orElse(null);
 
-        return c1;
+        return customers.get(accountId.trim());
     }
 }

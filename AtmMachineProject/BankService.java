@@ -10,15 +10,15 @@ public interface BankService {
 
     void deposit(int amount,String accountNo);
 
-    String openAccount(String name , double AdharNo , int balance );
+    String openAccount(String name ,String accountType , String AdharNo , int balance ,String bankName);
 
     Customer CloseAccount(String name , String accountNo);
 
     String  UpiTransaction(float amount , String upiId , String accountNo);
 
-    String loan(double AdharNo , float amount , int time , float intrest , float rate , String accountNo);
+    String loan(String AdharNo , float amount , int time , float rate , String accountNo);
 
-    String insurance(double AdharNo , String accountNo , float amount , int time , float intrest , float rate , String insuranceType , String insuranceId , String insuranceName , String insuranceNo , String insuranceStartDate , String insuranceEndDate);
+    String insurance(String AdharNo , String accountNo , float amount , int time , float intrest , float rate , String insuranceType , String insuranceId , String insuranceName , String insuranceNo , String insuranceStartDate , String insuranceEndDate);
 
     String creditCard( String accountNo , String cardNo , String cardHolderName , String cardType , String cardStartDate , String cardEndDate , String cardCvv , String cardPin , String cardStatus);
 
